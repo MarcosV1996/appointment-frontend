@@ -1,0 +1,179 @@
+<body>
+  <div class="container">
+    <div class="filter-container">
+      <div class="filter-options">
+        <label for="sortBy" class="filter-label">Ordenar por:</label>
+        <select id="sortBy" (change)="onSortChange($event)" class="filter-select">
+          <option value="name-asc">Nome A-Z</option>
+          <option value="name-desc">Nome Z-A</option>
+          <option value="date-asc">Agendamentos mais antigos</option>
+          <option value="date-desc">Agendamentos mais novos</option>
+        </select>
+  
+        <div class="search-container">
+          <input type="text" placeholder="Buscar por nome..." [(ngModel)]="searchTerm" (input)="onSearch()" />
+          <i class="fas fa-search search-icon"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="vagas-disponiveis-container">
+        <p class="vagas-disponiveis-message">
+          Vagas Disponíveis: <span>{{ availableBeds }}</span>
+        </p>
+      </div>
+      
+      <div *ngIf="filteredAppointments && filteredAppointments.length > 0; else noData" class="card-container">
+        <div *ngFor="let appointment of filteredAppointments" class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="card-title">{{ toCamelCase(appointment.name) }} {{ toCamelCase(appointment.last_name) }}</h4>
+            </div>
+            <div class="photo-container">
+              <img *ngIf="appointment.photo" [src]="appointment.photo" alt="Foto do Acolhido" class="appointment-photo" />
+              <ng-template #noPhoto>
+                <p><i class="fas fa-camera"></i><strong> Foto:</strong> Não disponível</p>
+              </ng-template>
+            </div>
+          </div>
+
+          <div *ngIf="appointment && appointment.name" class="card-body">
+            <div class="info-row">
+              <i class="fas fa-id-card"></i>
+              <strong> CPF:</strong> {{ formatCpf(appointment.cpf) }}
+            </div>
+            <div class="info-row">
+              <i class="fas fa-calendar-alt"></i>
+              <strong> Data de Nascimento:</strong> {{ appointment.birth_date | date: 'dd/MM/yyyy' }}
+            </div>
+            <div class="info-row">
+              <i class="fas fa-female"></i>
+              <strong> Nome da Mãe:</strong> {{ toCamelCase(appointment.mother_name) }}
+            </div>
+            <div class="info-row">
+              <i class="fas fa-calendar-check"></i>
+              <strong> Data de Chegada:</strong> {{ appointment.arrival_date | date: 'dd/MM/yyyy' }}
+            </div>
+
+            <div class="info-row" *ngIf="!appointment.showMore">
+              <button class="btn btn-link read-more-button" (click)="toggleShowMore(appointment)">
+                Leia Mais
+              </button>
+            </div>
+
+            <div *ngIf="appointment.showMore" class="additional-info">
+              <div class="info-row">
+                <i class="fas fa-clock"></i>
+                <strong> Horário de Chegada:</strong> {{ appointment.time }}
+              </div>
+              <div class="info-row">
+                <i class="fas fa-map-marker-alt"></i>
+                <strong> Estado:</strong> {{ appointment.state }}
+              </div>
+              <div class="info-row">
+                <i class="fas fa-map-signs"></i>
+                <strong> Cidade:</strong> {{ appointment.city }}
+              </div>
+              <div class="info-row">
+                <i class="fas fa-phone"></i>
+                <strong> Telefone:</strong> {{ formatPhoneNumber(appointment.phone) }}
+              </div>
+              <div class="info-row">
+                <i class="fas fa-venus-mars"></i>
+                <strong> Gênero:</strong> {{ appointment.gender }}
+              </div>
+
+              <div class="info-row" *ngIf="appointment.additionalInfo?.ethnicity">
+                <i class="fas fa-users"></i>
+                <strong> Etnia:</strong> {{ formatString(appointment.additionalInfo.ethnicity) || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.addictions">
+                <i class="fas fa-wine-bottle"></i>
+                <strong> Vícios:</strong> {{ formatString(appointment.additionalInfo.addictions) || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.is_accompanied !== undefined">
+                <i class="fas fa-user-friends"></i>
+                <strong> Acompanhado:</strong> {{ appointment.additionalInfo.is_accompanied ? 'Sim' : 'Não' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.benefits">
+                <i class="fas fa-hand-holding-usd"></i>
+                <strong> Benefícios:</strong> {{ formatString(appointment.additionalInfo.benefits) || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.is_lactating !== undefined">
+                <i class="fas fa-baby"></i>
+                <strong> Lactante:</strong> {{ appointment.additionalInfo.is_lactating ? 'Sim' : 'Não' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.has_disability !== undefined">
+                <i class="fas fa-wheelchair"></i>
+                <strong> Deficiência:</strong> {{ appointment.additionalInfo.has_disability ? 'Sim' : 'Não' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.chronic_disease">
+                <i class="fas fa-heartbeat"></i>
+                <strong> Doença Crônica:</strong> {{ formatString(appointment.additionalInfo.chronic_disease) || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.education_level">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <strong> Escolaridade:</strong> {{ formatString(appointment.additionalInfo.education_level) || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.nationality">
+                <i class="fas fa-passport"></i>
+                <strong> Nacionalidade:</strong> {{ formatString(appointment.additionalInfo.nationality) || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.stay_duration">
+                <i class="fas fa-calendar-day"></i>
+                <strong>Duração da Estadia:</strong> {{ appointment.additionalInfo.stay_duration }} dias
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.room_id">
+                <i class="fas fa-bed"></i>
+                <strong> Quarto:</strong> {{ roomNames[appointment.additionalInfo.room_id ?? 0] || '-' }}
+              </div>
+              <div class="info-row" *ngIf="appointment.additionalInfo?.bed_id">
+                <i class="fas fa-procedures"></i>
+                <strong> Cama:</strong> {{ appointment.additionalInfo.bed_id || '-' }}
+              </div>
+
+              <div class="info-row">
+                <button class="btn btn-link read-more-button" (click)="toggleShowMore(appointment)">
+                  Leia Menos
+                </button>
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <button class="btn edit-button" (click)="editAppointment(appointment)">Editar</button>
+              <button *ngIf="!appointment.isHidden" class="btn hide-button" (click)="openHideModal(appointment)">Saida de acolhimento</button>
+              <button *ngIf="appointment.isHidden && searchTerm && appointment.name.toLowerCase().includes(searchTerm.toLowerCase())"
+                      class="btn add-button" (click)="showAppointment(appointment)">Inserir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noData>
+        <p class="no-data-message">Nenhum agendamento encontrado.</p>
+      </ng-template>
+    </div>
+    </div>
+
+    <!-- Modal de Confirmação de Ocultação -->
+    <div class="modal fade show d-block" id="confirmHideModal" tabindex="-1" role="dialog" aria-labelledby="confirmHideModalLabel" aria-hidden="true" *ngIf="isHideModalOpen">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmHideModalLabel">Confirmação para o acolhido sair da casa de acolhimento</h5>
+            <button type="button" class="close" (click)="closeHideModal()" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Você tem certeza que deseja remover o acolhido da lista ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeHideModal()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="confirmHide()">Remover acolhimento</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>

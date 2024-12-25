@@ -1,0 +1,234 @@
+.container-fluid {
+  max-width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Estilo para o grupo de formulários */
+.form-group {
+  margin-bottom: 20px; /* Espaçamento vertical entre grupos de formulários */
+}
+
+/* Estilo para os labels */
+.label-bold {
+  font-weight: bold;
+}
+
+/* Estilo para os campos de entrada grandes */
+.form-control-lg {
+  padding: 12px; /* Aumenta o espaçamento interno dos campos */
+  font-size: 1rem;
+}
+
+/* Navegação por etapas */
+.nav-step {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.nav-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  background-color: #5cb85c;
+  color: #fff;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.nav-item.active {
+  background-color: #5bc0de;
+}
+.nav-item.completed {
+  background-color: #5cb85c;
+}
+.nav-item .step-number {
+  font-size: 16px;
+  font-weight: bold;
+}
+.nav-item .step-description {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase; /* Coloca o texto em letras maiúsculas */
+  margin-bottom: 10px; /* Espaço abaixo do número */
+}
+/* Setas ao final de cada etapa */
+.nav-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -20px;
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 20px solid #5cb85c;
+  z-index: 1;
+}
+.nav-item.active:not(:last-child)::after {
+  border-left-color: #5bc0de;
+}
+.nav-item.completed:not(:last-child)::after {
+  border-left-color: #5cb85c;
+}
+.nav-item:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.nav-item:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* Estilos para botões */
+button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para mensagens de erro */
+.error-message {
+  color: red;
+  font-size: 14px;
+}
+
+/* Estilo para o modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+/* CSS para personalizar o select e adicionar o ícone */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  -webkit-appearance: none; /* Remove o ícone padrão no Chrome e Safari */
+  -moz-appearance: none;    /* Remove o ícone padrão no Firefox */
+  appearance: none;         /* Remove o ícone padrão em todos os navegadores */
+  padding-right: 30px;      /* Espaçamento para o ícone personalizado */
+}
+
+.select-wrapper::after {
+  content: '\25BC';         /* Símbolo do ícone de dropdown (seta para baixo) */
+  position: absolute;
+  right: 10px;              /* Ajuste a posição do ícone à direita */
+  top: 50%;
+  transform: translateY(-50%); /* Centraliza o ícone verticalmente */
+  pointer-events: none;     /* Impede a interação do ícone */
+  font-size: 10px;          /* Tamanho do ícone */
+  color: #555;              /* Cor do ícone */
+}
+
+/* Estilo para campos obrigatórios que estão com erro */
+.field-error {
+  border-color: red !important;
+}
+
+/* Estilo para ícones de sucesso e erro nos dropdowns */
+.text-success {
+  color: green;
+}
+
+.text-danger {
+  color: red;
+}
+
+/* Estilo responsivo para colunas */
+@media (max-width: 768px) {
+  .col-md-4, .col-sm-6 {
+    margin-bottom: 15px; /* Espaçamento entre colunas em telas menores */
+  }
+}
+
+/* Estilo para os campos de entrada grandes */
+.form-control-lg {
+  padding: 14px; /* Aumenta o espaçamento interno dos campos */
+  font-size: 1rem; /* Tamanho da fonte */
+  height: 48px; /* Altura maior para os campos de entrada */
+}
+/* Ajustes para inputs e selects em Step 2 */
+.form-control-lg {
+  padding: 14px; /* Aumenta o espaçamento interno dos campos */
+  font-size: 1rem; /* Tamanho da fonte */
+  height: 50px; /* Altura maior para os campos de entrada */
+}
+
+/* Ajuste específico para textarea */
+textarea.form-control-lg {
+  height: auto; /* Permite ajuste automático do campo de texto */
+}
+
+/* Ajuste para labels em negrito */
+.label-bold {
+  font-weight: bold;
+}
+
+/* Espaçamento adicional entre colunas */
+.row.mb-4 {
+  margin-bottom: 20px;
+}
+
+.col-lg-3, .col-md-4, .col-sm-6 {
+  margin-bottom: 15px; /* Espaçamento adicional entre colunas */
+}
+/* Container centralizado com largura máxima */
+.container-fluid {
+  max-width: 1200px; /* Defina uma largura máxima que se adapte bem ao layout */
+  margin: 0 auto; /* Centraliza o container na tela */
+}
+
+/* Ajuste de largura dos inputs */
+.form-control-lg {
+  width: 100%; /* Mantém a largura em 100% da coluna definida */
+  max-width: 350px; /* Limita a largura máxima para evitar campos muito largos */
+}
+
+/* Ajuste adicional para centralização dos campos */
+.row {
+  justify-content: space-between; /* Mantém um espaçamento uniforme entre os campos */
+}
+
+/* Estilo adicional para alinhamento */
+.form-group {
+  margin-bottom: 15px; /* Espaçamento entre os grupos de campo */
+}
+.btn:hover, .btn:focus {
+  background: #09928b !important; /* Forçando azul escuro ao passar o mouse */
+  -webkit-background-clip: none !important;
+  -webkit-text-fill-color: #ffffff !important; /* Cor do texto branca */
+  border: none !important; /* Removendo a borda branca */
+  box-shadow: none !important; /* Removendo a sombra */
+  text-decoration: none !important; /* Sem sublinhado */
+}
+
